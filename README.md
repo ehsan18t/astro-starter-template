@@ -1,4 +1,4 @@
-# Astro Advanced Starter 🚀
+# Astro Minimal Starter 🚀
 
 A minimal pre-configured Astro starter template with TypeScript, Tailwind CSS, path aliases, and optimized defaults for modern web development.
 
