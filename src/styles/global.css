@@ -65,6 +65,7 @@
   --animate-*: initial;
 }
 
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 @custom-variant hover (&:hover);
 
 body {
