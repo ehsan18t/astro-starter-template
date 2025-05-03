@@ -9,7 +9,7 @@
     "jsxImportSource": "react",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "moduleResolution": "node",
+    "moduleResolution": "Bundler",
     "types": ["astro/client", "vite/client"],
     "skipLibCheck": true,
     "strict": true,
