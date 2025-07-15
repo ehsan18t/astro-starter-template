@@ -10,15 +10,15 @@
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.4.1",
-    "@astrojs/vercel": "^8.2.1",
+    "@astrojs/vercel": "^8.2.2",
     "@tailwindcss/vite": "^4.1.11",
-    "astro": "^5.11.0",
+    "astro": "^5.11.1",
     "astro-icon": "^1.1.5",
     "tailwindcss": "^4.1.11"
   },
   "devDependencies": {
     "prettier": "^3.6.2",
     "prettier-plugin-astro": "^0.14.1",
-    "prettier-plugin-tailwindcss": "^0.6.13"
+    "prettier-plugin-tailwindcss": "^0.6.14"
   }
 }
