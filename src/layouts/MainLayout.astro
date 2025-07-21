@@ -47,6 +47,8 @@ export interface Props {
   author?: string;
   /** The locale of the page (e.g., "en-US"). Defaults to "en". */
   locale?: string;
+  /** Additional CSS classes to apply to the <body> element. */
+  class?: string;
 }
 
 const {
@@ -60,6 +62,7 @@ const {
   twitterHandle = "@mywebsite",
   author = "Site Author",
   locale = "en",
+  class: className,
 } = Astro.props;
 
 // Build absolute image URL if a relative path is provided
@@ -137,7 +140,7 @@ const structuredData = {
     <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
   </head>
 
-  <body>
+  <body class:list={[className]}>
     <slot />
   </body>
 </html>

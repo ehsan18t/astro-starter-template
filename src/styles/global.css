@@ -1,63 +1,78 @@
 /* Fonts */
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
 
 /* Tailwind CSS */
 @import "tailwindcss";
 
 @layer base {
+  /* 
+    Color System using HSL
+    - Defines semantic color roles for dark and light themes.
+    - Dark theme is the default.
+  */
+
+  /* Dark Theme (Default) */
   :root,
   [data-theme="dark"] {
-    color-scheme: light dark;
+    color-scheme: dark;
 
-    --background: 2, 21, 38; /* #021526 */
-    --foreground: 224, 230, 237; /* #E0E6ED */
-    --foreground-muted: 170, 183, 196; /* #AAB7C4 */
-    --secondary: 255, 111, 97; /* #ff6f61 */
+    /* Semantic Colors */
+    --background: 222 47% 11%; /* #0f172a */
+    --foreground: 210 40% 98%; /* #f8fafc */
+    --foreground-muted: 215 20% 65%; /* #94a3b8 */
+    --card: 222 47% 15%; /* #182235 */
+    --border: 217 33% 25%; /* #2e3a59 */
+    --primary: 210 40% 98%; /* #f8fafc */
+    --primary-foreground: 222 47% 11%; /* #0f172a */
+    --secondary: 217 33% 30%; /* #384569 */
+    --secondary-foreground: 210 40% 98%; /* #f8fafc */
+    --accent: 12 95% 62%; /* #f95549 */
+    --accent-foreground: 210 40% 98%; /* #f8fafc */
 
-    --scroll-bg: rgb(var(--background));
-    --scroll-main: oklch(0.55 0.22 185);
-
-    /* Accent */
-    --accent-300: 0.95 0.08 185; /* oklch(0.95 0.08 185) */
-    --accent-500: 0.75 0.18 185; /* oklch(0.75 0.18 185) */
-    --accent-900: 0.55 0.22 185; /* oklch(0.55 0.22 185) */
-
-    /* Accent Hybrid */
-    --accent-bg: var(--accent-900);
-    --accent-text: var(--accent-300);
-    --accent-title: var(--accent-500);
+    /* Scrollbar Colors */
+    --scroll-bg: var(--background);
+    --scroll-main: var(--accent);
+    --scroll-main-hover: 12 95% 55%; /* #f04438 */
   }
 
+  /* Light Theme */
   [data-theme="light"] {
-    --background: 249 250 251; /* rgb(249 250 251) */
-    --background-muted: 0.967 0.003 264.542; /* oklch(0.967 0.003 264.542) */
-    --text: 17 24 39; /* rgb(17 24 39) */
-    --text-muted: 0.446 0.03 256.802; /* oklch(0.446 0.03 256.802) */
+    color-scheme: light;
 
-    /* Accent Hybrid */
-    --accent-bg: var(--accent-300);
-    --accent-text: var(--accent-900);
-    --accent-title: var(--accent-900);
+    /* Semantic Colors */
+    --background: 0 0% 100%; /* #ffffff */
+    --foreground: 222 47% 11%; /* #0f172a */
+    --foreground-muted: 215 20% 45%; /* #64748b */
+    --card: 0 0% 98%; /* #fafafa */
+    --border: 214 32% 91%; /* #e2e8f0 */
+    --primary: 222 47% 11%; /* #0f172a */
+    --primary-foreground: 210 40% 98%; /* #f8fafc */
+    --secondary: 214 32% 91%; /* #e2e8f0 */
+    --secondary-foreground: 222 47% 11%; /* #0f172a */
+    --accent: 12 95% 55%; /* #f04438 */
+    --accent-foreground: 210 40% 98%; /* #f8fafc */
+
+    /* Scrollbar Colors */
+    --scroll-main-hover: 12 95% 62%; /* #f95549 */
   }
 }
 
 @theme {
-  /* Colors */
-  --color-background: rgb(var(--background));
-  --color-foreground: rgb(var(--foreground));
-  --color-foreground-muted: rgb(var(--foreground-muted));
-  --color-primary: rgb(var(--primary));
-  --color-primary-muted: rgb(var(--primary-muted));
-  --color-secondary: rgb(var(--secondary));
+  /* Make semantic colors available as Tailwind utilities */
+  /* Example: `bg-background`, `text-primary`, `border-accent` */
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-foreground-muted: hsl(var(--foreground-muted));
+  --color-card: hsl(var(--card));
+  --color-border: hsl(var(--border));
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
 
-  --color-accent-300: oklch(var(--accent-300));
-  --color-accent-500: oklch(var(--accent-500));
-  --color-accent-900: oklch(var(--accent-900));
-
-  --color-accent-bg: oklch(var(--accent-bg));
-  --color-accent-text: oklch(var(--accent-text));
-  --color-accent-title: oklch(var(--accent-title));
-
+  /* Define font variable for Tailwind */
   --font-Inter:
     "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
@@ -76,33 +91,27 @@ body {
 /* Custom Scrollbar */
 * {
   scrollbar-width: thin;
-  scrollbar-color: var(--scroll-main) var(--scroll-bg);
+  scrollbar-color: hsl(var(--scroll-main)) hsl(var(--scroll-bg));
   scroll-behavior: smooth;
 }
 
 /* Chrome, Edge, and Safari */
 *::-webkit-scrollbar {
-  width: 12px; /* Slightly thinner for a more modern look */
-  height: 12px; /* For horizontal scrollbars */
+  width: 12px;
+  height: 12px;
 }
 
 *::-webkit-scrollbar-track {
-  background: var(--scroll-bg);
-  border-radius: 8px;
-  margin: 4px 0; /* Add some margin for a floating look */
+  background: hsl(var(--scroll-bg));
 }
 
 *::-webkit-scrollbar-thumb {
-  background-color: var(--scroll-main);
+  background-color: hsl(var(--scroll-main));
   border-radius: 8px;
-  border: 3px solid var(--scroll-bg);
+  border: 3px solid hsl(var(--scroll-bg));
   transition: background-color 0.2s ease;
 }
 
 *::-webkit-scrollbar-thumb:hover {
-  @apply bg-accent-500;
-}
-
-*::-webkit-scrollbar-thumb:active {
-  @apply bg-accent-500;
+  background-color: hsl(var(--scroll-main-hover));
 }
