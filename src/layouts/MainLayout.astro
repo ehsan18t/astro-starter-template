@@ -22,6 +22,7 @@
  * ```
  */
 import "@/styles/global.css";
+import { cn } from "@/utils";
 
 /**
  * Defines the properties accepted by the MainLayout component.
@@ -140,7 +141,7 @@ const structuredData = {
     <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
   </head>
 
-  <body class:list={[className]}>
+  <body class={cn("grid min-h-screen min-w-full grid-rows-[auto_1fr_auto] bg-background text-foreground font-Inter scroll-smooth leading-6 antialiased", className)}>
     <slot />
   </body>
 </html>
