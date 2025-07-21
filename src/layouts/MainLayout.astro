@@ -1,43 +1,140 @@
 ---
+/**
+ * MainLayout Component
+ *
+ * This component provides the basic HTML structure, SEO metadata, and social sharing tags
+ * for all pages on the site. It ensures a consistent <head> across the application.
+ *
+ * ## Usage Example
+ *
+ * ```astro
+ * ---
+ * import MainLayout from '@/layouts/MainLayout.astro';
+ * ---
+ * <MainLayout
+ *   title="My Awesome Page"
+ *   description="A brief but engaging description of this page."
+ *   image="/images/social-preview.jpg"
+ * >
+ *   <h1>Hello, World!</h1>
+ *   <p>This is the content of my page.</p>
+ * </MainLayout>
+ * ```
+ */
 import "@/styles/global.css";
+
+/**
+ * Defines the properties accepted by the MainLayout component.
+ */
+export interface Props {
+  /** The main title for the page, used in the <title> tag and social media cards. */
+  title?: string;
+  /** A brief summary of the page's content, used for the meta description and social media cards. */
+  description?: string;
+  /** The URL of a preview image for social media cards (e.g., /images/og-image.png). */
+  image?: string;
+  /** The alternative text for the social media preview image. Defaults to the page title. */
+  imageAlt?: string;
+  /** The canonical URL for the page. Defaults to the current page's URL. */
+  canonicalUrl?: string;
+  /** If true, sets the robots meta tag to "noindex, nofollow" to prevent search engine indexing. */
+  noIndex?: boolean;
+  /** The name of the website, used in the title and Open Graph tags. */
+  siteName?: string;
+  /** The Twitter handle for the website (e.g., @astrodotbuild). */
+  twitterHandle?: string;
+  /** The author of the page content. */
+  author?: string;
+  /** The locale of the page (e.g., "en-US"). Defaults to "en". */
+  locale?: string;
+}
+
+const {
+  title = "Default Site Title",
+  description = "Brief description of your website. Add details about what your site offers to visitors.",
+  image,
+  imageAlt = title,
+  canonicalUrl = Astro.url.href,
+  noIndex = false,
+  siteName = "My Website",
+  twitterHandle = "@mywebsite",
+  author = "Site Author",
+  locale = "en",
+} = Astro.props;
+
+// Build absolute image URL if a relative path is provided
+const absoluteImageUrl = image ? new URL(image, Astro.site || Astro.url.origin).href : undefined;
+
+// Create a clean title, adding the site name if not already present
+const cleanTitle = title.includes(siteName) ? title : `${title} | ${siteName}`;
+
+// Basic structured data for SEO
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: cleanTitle,
+  url: canonicalUrl,
+  description: description,
+  ...(absoluteImageUrl && { image: absoluteImageUrl }),
+};
 ---
 
-<html lang="en">
+<!doctype html>
+<html lang={locale} dir="ltr">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
 
-    <!-- Robot/Sitemap -->
-    <link rel="sitemap" href="/sitemap-index.xml" />
-    <meta name="robots" content="index, follow" />
-    <link rel="canonical" href="https://your-site-url.com/" />
+    <!-- Favicons -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
 
-    <!-- Meta Info -->
-    <title>Your Site Name | Your Tagline Here</title>
-    <meta name="description" content="Brief description of your website. Add details about what your site offers to visitors." />
-    <meta name="keywords" content="keyword1, keyword2, keyword3, relevant, search, terms" />
-    <meta name="author" content="Your Organization Name" />
+    <!-- SEO Meta Tags -->
+    <title>{cleanTitle}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content={author} />
+    <link rel="canonical" href={canonicalUrl} />
 
-    <!-- Theme Preference (default: Dark) -->
-    <meta name="theme" content="dark" />
+    <!-- Robots Meta -->
+    <meta name="robots" content={noIndex ? "noindex, nofollow" : "index, follow"} />
+
+    <!-- Theme and Appearance -->
     <meta name="color-scheme" content="light dark" />
     <meta name="darkreader-lock" content="dark" />
 
-    <!-- Open Graph / Facebook -->
-    <meta property="og:site_name" content="Site Name" />
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content={cleanTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:site_name" content={siteName} />
+    <meta property="og:locale" content={locale.replace("-", "_")} />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Your Page Title | Your Brand" />
-    <meta property="og:description" content="A compelling description of your page for social media sharing." />
-    <meta property="og:url" content="https://your-site-url.com/" />
-    <!-- <meta property="og:image" content="https://your-site-url.com/assets/og-image.png"> -->
+    {
+      absoluteImageUrl && (
+        <>
+          <meta property="og:image" content={absoluteImageUrl} />
+          <meta property="og:image:alt" content={imageAlt} />
+          <meta property="og:image:width" content="1200" />
+          <meta property="og:image:height" content="630" />
+        </>
+      )
+    }
 
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Your Twitter Title" />
-    <meta name="twitter:description" content="Brief description for Twitter sharing (max 200 characters)." />
-    <meta name="twitter:site" content="@yourusername" />
-    <!-- <meta name="twitter:image" content="https://your-site-url.com/assets/twitter-card.png"> -->
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content={absoluteImageUrl ? "summary_large_image" : "summary"} />
+    <meta name="twitter:site" content={twitterHandle} />
+    <meta name="twitter:title" content={cleanTitle} />
+    <meta name="twitter:description" content={description} />
+    {absoluteImageUrl && <meta name="twitter:image" content={absoluteImageUrl} />}
+    {absoluteImageUrl && <meta name="twitter:image:alt" content={imageAlt} />}
+
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+
+    <!-- Security Headers -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
   </head>
 
   <body>
