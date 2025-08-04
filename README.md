@@ -37,7 +37,7 @@ bun create astro@latest my-project --template ehsan18t/astro-starter-template
 
 ### npm
 ```bash
-npm create astro@latest my-project -- --template ehsan18t/astro-starter-template
+npm create astro@latest my-project --template ehsan18t/astro-starter-template
 ```
 
 ### pnpm
